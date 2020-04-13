@@ -65,7 +65,8 @@ for i in range(num_tries):
         if random_data:
             _inp = np.random.randn(batch_size, 3, 300, 300)
             data = Variable(torch.FloatTensor(_inp))
-            data = data.cuda()
+            data = data.cuda()  # 之所以要fork，就是因为这里，
+            #可以看出，计算torch的batch用时，必须把这个data.cuda()的时间给算进去，因为tensorflow也是把这个uploading图片的时间给算进去的。
         model(data)
     t1 = time.time()
     elapsed_time = t1- t0
